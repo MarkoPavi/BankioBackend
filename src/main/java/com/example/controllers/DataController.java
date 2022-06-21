@@ -1,16 +1,13 @@
 package com.example.controllers;
 
-import com.example.interfaces.RepositoryInterface;
-import com.example.models.SomeData;
+import com.example.models.Contract;
 import com.example.services.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /*@CrossOrigin(origins = "http://localhost:8081") //todo*/
 @RestController
@@ -20,39 +17,20 @@ public class DataController {
     @Autowired
     private BankService bankService;
 
-/*    @Autowired
-    RepositoryInterface repositoryInterface;*/
-
-    /*@GetMapping("/response")
-    public ResponseEntity<List<SomeData>> getAllData(@RequestParam(required = false) String title){
-        try {
-            List<SomeData> someDataList = new ArrayList<SomeData>();
-
-            if (title == null)
-                repositoryInterface.findAll().forEach(someDataList::add);
-            else
-                repositoryInterface.findByTitleContaining(title).forEach(someDataList::add);
-
-            if (someDataList.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            return new ResponseEntity<>(someDataList, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-    }*/
+    @GetMapping("/getAllContracts")
+    public ResponseEntity<List<Contract>> getAllData(){
+        return bankService.getAllContracts();
+    }
 
     @GetMapping("/getContract/{id}")
-    public ResponseEntity<SomeData> getDataById(@PathVariable("id") int id){
+    public ResponseEntity<Contract> getDataById(@PathVariable("id") int id){
         return bankService.getContract(id);
     }
 
 
     @PostMapping("/postContract")
-    public ResponseEntity<SomeData> createContract(@RequestBody SomeData someData){
-        return bankService.createContract(someData);
+    public ResponseEntity<Contract> createContract(@RequestBody Contract contract){
+        return bankService.createContract(contract);
     }
 
 /*
@@ -71,17 +49,13 @@ public class DataController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+*/
 
-    @DeleteMapping("/response/{id}")
-    public ResponseEntity<HttpStatus> deleteData(@PathVariable("id") int id) {
-        try {
-            repositoryInterface.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @DeleteMapping("/deleteContract/{id}")
+    public ResponseEntity<HttpStatus> deleteContract(@PathVariable("id") int id) {
+        return bankService.deleteContract(id);
     }
-
+/*
     @DeleteMapping("/response")
     public ResponseEntity<HttpStatus> deleteAllData() {
         try {

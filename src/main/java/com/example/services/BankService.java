@@ -1,28 +1,42 @@
 
 package com.example.services;
 
-import com.example.factories.WebClientFactory;
 import com.example.interfaces.RepositoryInterface;
-import com.example.models.SomeData;
+import com.example.models.Contract;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScans;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class BankService {
 
+    final static Logger log = LoggerFactory.getLogger(BankService.class);
     @Autowired
     RepositoryInterface repositoryInterface;
 
-    public ResponseEntity<SomeData> getContract(int id){
-        Optional<SomeData> contractData = repositoryInterface.findById(id);
+    public ResponseEntity<List<Contract>> getAllContracts(){
+        try {
 
+            List<Contract> contractList = new ArrayList<>(repositoryInterface.findAll());
+            return new ResponseEntity<>(contractList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<Contract> getContract(int id){
+        Optional<Contract> contractData = repositoryInterface.findById(id);
+
+        //todo
         if(contractData.isPresent()){
             return new ResponseEntity<>(contractData.get(),HttpStatus.OK);
         }
@@ -33,34 +47,46 @@ public class BankService {
     }
 
 
-    public ResponseEntity<SomeData> createContract(SomeData someData){
+    public ResponseEntity<Contract> createContract(Contract contract){
         try {
-            SomeData finalData = repositoryInterface.
-                    save(SomeData.builder()
-                            .name(someData.getName())
-                            .surname(someData.getSurname())
-                            .title(someData.getTitle())
-                            .gender(someData.getGender())
-                            .address(someData.getAddress())
-                            .postalCode(someData.getPostalCode())
-                            .birthCountry(someData.getBirthCountry())
-                            .stayingCountry(someData.getStayingCountry())
-                            .citizenship(someData.getCitizenship())
-                            .phoneNumber(someData.getPhoneNumber())
-                            .loanAmmount(someData.getLoanAmmount())
+            Contract finalData = repositoryInterface.
+                    save(Contract.builder()
+                            .name(contract.getName())
+                            .surname(contract.getSurname())
+                            .title(contract.getTitle())
+                            .gender(contract.getGender())
+                            .address(contract.getAddress())
+                            .postalCode(contract.getPostalCode())
+                            .birthCountry(contract.getBirthCountry())
+                            .stayingCountry(contract.getStayingCountry())
+                            .citizenship(contract.getCitizenship())
+                            .phoneNumber(contract.getPhoneNumber())
+                            .loanAmmount(contract.getLoanAmmount())
                             //.loanDuration(someData.getLoanDuration())
-                            .interestRate(someData.getInterestRate())
-                            .monthlyPayment(someData.getMonthlyPayment())
-                            .taxes(someData.getTaxes())
+                            .interestRate(contract.getInterestRate())
+                            .monthlyPayment(contract.getMonthlyPayment())
+                            .taxes(contract.getTaxes())
                             //.iban(someData.getIban())
-                            .income(someData.getIncome())
+                            .income(contract.getIncome())
                             .published(false)
                             //.relationshipStatus(someData.getRelationshipStatus())
-                            .description(someData.getDescription())
+                            .description(contract.getDescription())
                             .build());
             return new ResponseEntity<>(finalData, HttpStatus.CREATED);
         }catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public ResponseEntity<HttpStatus> deleteContract(int id){
+        try {
+            repositoryInterface.deleteById(id);
+            log.info("Successfuly deleted contract with id: " + id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            log.info("No contract with id : " + id);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
         }
     }
 }
