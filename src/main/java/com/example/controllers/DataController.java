@@ -33,39 +33,23 @@ public class DataController {
         return bankService.createContract(contract);
     }
 
-/*
-    @PutMapping("/response/{id}")
-    public ResponseEntity<SomeData> updateData(@PathVariable("id") int id,SomeData someData){
-        Optional<SomeData> checkData = repositoryInterface.findById(id);
 
-        if(checkData.isPresent()){
-            SomeData tempData = checkData.get();
-            tempData.setName(someData.getName());
-            tempData.setDescription(someData.getDescription());
-            tempData.setIncome(someData.getIncome());
-            tempData.setPublished(someData.getPublished());
-            return new ResponseEntity<>(repositoryInterface.save(tempData), HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @PutMapping("/updateContract/{id}")
+    public void updateData(@PathVariable("id") int id, Contract someData){
+        bankService.updateData(id,someData);
     }
-*/
+
 
     @DeleteMapping("/deleteContract/{id}")
     public ResponseEntity<HttpStatus> deleteContract(@PathVariable("id") int id) {
         return bankService.deleteContract(id);
     }
-/*
-    @DeleteMapping("/response")
-    public ResponseEntity<HttpStatus> deleteAllData() {
-        try {
-            repositoryInterface.deleteAll();
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
+    @DeleteMapping("/deleteAllContracts")
+    public ResponseEntity<HttpStatus> deleteAllContracts() {
+        return bankService.deleteAllContracts();
+    }
+/*
     @GetMapping("/response/published")
     public ResponseEntity<List<SomeData>> findByPublished() {
         try {

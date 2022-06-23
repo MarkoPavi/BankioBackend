@@ -3,7 +3,6 @@ package com.example.services;
 
 import com.example.interfaces.RepositoryInterface;
 import com.example.models.Contract;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +86,34 @@ public class BankService {
             log.info("No contract with id : " + id);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
+        }
+    }
+
+    public ResponseEntity<HttpStatus> deleteAllContracts(){
+        try {
+            repositoryInterface.deleteAll();
+            log.info("Deleted all contracts successfully.");
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            log.info("No contracts found.");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public void updateData(int id, Contract someData){
+        Optional<Contract> checkData = repositoryInterface.findById(id);
+
+        if(checkData.isPresent()){
+            Contract tempData = checkData.get();
+            tempData.setName(someData.getName());
+            tempData.setDescription(someData.getDescription());
+            tempData.setIncome(someData.getIncome());
+            tempData.setPublished(someData.getPublished());
+            log.info("Updated contract with id : " + id);
+            new ResponseEntity<>(repositoryInterface.save(tempData), HttpStatus.OK);
+        }else{
+            log.info("Contract with ID: + " + id + " not found");
+            new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }
