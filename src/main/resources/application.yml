@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/testdb
+    username: user_admin
+    password: 1436
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL94Dialect
+        format_sql: true
+    show-sql: false
+
+server:
+  ssl:
+    key-alias: restBank
+    key-store: "src/main/resources/restBank.p12"
+    key-store-type: PKCS12
+    key-password: s0mepa55
+    enabled: true
+    key-store-password: s0mepa55
+  port: 8443

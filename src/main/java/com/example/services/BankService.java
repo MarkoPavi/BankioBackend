@@ -20,12 +20,12 @@ public class BankService {
 
     final static Logger log = LoggerFactory.getLogger(BankService.class);
     @Autowired
-    RepositoryInterface repositoryInterface;
+    RepositoryInterface bankRepository;
 
     public ResponseEntity<List<Contract>> getAllContracts(){
         try {
 
-            List<Contract> contractList = new ArrayList<>(repositoryInterface.findAll());
+            List<Contract> contractList = new ArrayList<>(bankRepository.findAll());
             return new ResponseEntity<>(contractList, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -33,7 +33,7 @@ public class BankService {
     }
 
     public ResponseEntity<Contract> getContract(int id){
-        Optional<Contract> contractData = repositoryInterface.findById(id);
+        Optional<Contract> contractData = bankRepository.findById(id);
 
         //todo
         if(contractData.isPresent()){
@@ -48,7 +48,7 @@ public class BankService {
 
     public ResponseEntity<Contract> createContract(Contract contract){
         try {
-            Contract finalData = repositoryInterface.
+            Contract finalData = bankRepository.
                     save(Contract.builder()
                             .name(contract.getName())
                             .surname(contract.getSurname())
@@ -79,7 +79,7 @@ public class BankService {
 
     public ResponseEntity<HttpStatus> deleteContract(int id){
         try {
-            repositoryInterface.deleteById(id);
+            bankRepository.deleteById(id);
             log.info("Successfuly deleted contract with id: " + id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
@@ -91,7 +91,7 @@ public class BankService {
 
     public ResponseEntity<HttpStatus> deleteAllContracts(){
         try {
-            repositoryInterface.deleteAll();
+            bankRepository.deleteAll();
             log.info("Deleted all contracts successfully.");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
@@ -101,7 +101,7 @@ public class BankService {
     }
 
     public void updateData(int id, Contract someData){
-        Optional<Contract> checkData = repositoryInterface.findById(id);
+        Optional<Contract> checkData = bankRepository.findById(id);
 
         if(checkData.isPresent()){
             Contract tempData = checkData.get();
@@ -110,7 +110,7 @@ public class BankService {
             tempData.setIncome(someData.getIncome());
             tempData.setPublished(someData.getPublished());
             log.info("Updated contract with id : " + id);
-            new ResponseEntity<>(repositoryInterface.save(tempData), HttpStatus.OK);
+            new ResponseEntity<>(bankRepository.save(tempData), HttpStatus.OK);
         }else{
             log.info("Contract with ID: + " + id + " not found");
             new ResponseEntity<>(HttpStatus.NOT_FOUND);
