@@ -5,10 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class FlawlessProbeApplication {
+public class BankioBankend {
 
     public static void main(String[] args) {
-        SpringApplication.run(FlawlessProbeApplication.class, args);
+        SpringApplication.run(BankioBankend.class, args);
 
     }
 
