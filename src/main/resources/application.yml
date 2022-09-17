@@ -3,6 +3,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/testdb
     username: user_admin
     password: 1436
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
@@ -11,6 +12,8 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQL94Dialect
         format_sql: true
     show-sql: false
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 
 server:
   ssl:
