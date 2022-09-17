@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>flawless-probe</artifactId>
+    <artifactId>bankio-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>flawless-probe</name>
+    <name>fbankio-backend</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>16</java.version>
