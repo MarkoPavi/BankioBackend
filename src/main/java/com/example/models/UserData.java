@@ -1,4 +1,4 @@
-/*package com.example.models;
+package com.example.models;
 
 
 import lombok.*;
@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
 @Getter
 @Setter
 @ToString
@@ -45,4 +46,4 @@ public class UserData {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "authLevel_id"))
     private Set<Role> roles = new HashSet<>();
-}*/
+}

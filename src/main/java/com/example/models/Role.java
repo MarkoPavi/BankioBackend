@@ -22,7 +22,4 @@ public class Role {
     @Column(length = 20)
     private AuthLevel level;
 
-    public void setLevel(AuthLevel authLevel){
-        this.level=level;
-    }
 }
