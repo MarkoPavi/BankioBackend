@@ -15,6 +15,10 @@ spring:
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
+bankio:
+  app:
+    jwtSecret: bankioSecretKey
+    jwtExpiration: 1800
 server:
   ssl:
     key-alias: restBank
