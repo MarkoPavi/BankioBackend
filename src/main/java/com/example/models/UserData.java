@@ -42,8 +42,8 @@ public class UserData {
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(	name = "user_authLevels",
+    @JoinTable(	name = "user_auth_levels",
             joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "authLevel_id"))
+            inverseJoinColumns = @JoinColumn(name = "auth_level_id"))
     private Set<Role> roles = new HashSet<>();
 }

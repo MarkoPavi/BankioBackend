@@ -41,10 +41,10 @@ public class SecurityConfiguration {
          return daoAuthProvider;
      }
 
-    /*@Bean
+    @Bean
     public AuthenticationManager authManagerFromConfig(AuthenticationConfiguration authConfig) throws Exception{
          return authConfig.getAuthenticationManager();
-     }*/
+     }
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
