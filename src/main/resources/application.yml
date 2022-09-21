@@ -18,7 +18,6 @@ spring:
 bankio:
   app:
     jwtSecret: bankioSecretKey
-    jwtExpiration: 1800
 server:
   ssl:
     key-alias: restBank

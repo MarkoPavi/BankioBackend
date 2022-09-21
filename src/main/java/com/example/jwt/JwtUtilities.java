@@ -8,6 +8,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.*;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 @Slf4j
@@ -18,17 +24,16 @@ public class JwtUtilities {
     @Value("${bankio.app.jwtSecret}")
     private String jwtSecret;
 
-    @Value("${bankio.app.jwtExpiration}")
-    private String jwtExpirationS;
 
-    public String generateToken(Authentication authentication){
+    public String generateToken(Authentication authentication) throws ParseException {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        Date expirationDate = new Date((new Date()).getTime() + jwtExpirationS);
+        LocalDateTime expirationLocalDate = LocalDateTime.now().plus(30, ChronoUnit.MINUTES);
+        Date expDate = Date.from(expirationLocalDate.atZone(ZoneId.systemDefault()).toInstant());
 
-        return Jwts.builder()
+    return Jwts.builder()
                 .setSubject((userDetails.getUsername()))
                 .setIssuedAt(new Date())
-                .setExpiration(expirationDate)
+                .setExpiration(expDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }

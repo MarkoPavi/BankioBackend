@@ -1,13 +1,10 @@
 package com.example.models.payloads.responses;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
-@Builder
-@AllArgsConstructor
+
 @Data
 public class TokenResponse {
     private String token;
@@ -16,5 +13,13 @@ public class TokenResponse {
     private String username;
     private String email;
     private List<String> roles;
+
+    public TokenResponse(String accessToken, Long id, String username, String email, List<String> roles) {
+        this.token = accessToken;
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.roles = roles;
+    }
 
 }
