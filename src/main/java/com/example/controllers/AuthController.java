@@ -13,11 +13,14 @@ import com.example.models.payloads.responses.TokenResponse;
 import com.example.services.UserDetailsImpl;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,24 +38,33 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
 
-    @Autowired
+    private final
+    AuthenticationManager testManager;
+
+    private final
     UserDataInterface userDataInterface;
 
-    @Autowired
-    private RoleInterface roleInterface;
+    private final RoleInterface roleInterface;
 
-    @Autowired
+    private final
     PasswordEncoder encoder;
 
-    @Autowired
+    private final
     JwtUtilities jwtUtilities;
+
+    public AuthController(AuthenticationManager testManager, UserDataInterface userDataInterface, RoleInterface roleInterface, PasswordEncoder encoder, JwtUtilities jwtUtilities) {
+        this.testManager = testManager;
+        this.userDataInterface = userDataInterface;
+        this.roleInterface = roleInterface;
+        this.encoder = encoder;
+        this.jwtUtilities = jwtUtilities;
+    }
 
     @PostMapping("login")
     public ResponseEntity<?> authenticateUser (@Valid @RequestBody LoginRequest loginRequest) throws ParseException {
-        Authentication authentication = authenticationManager.authenticate(
+
+        Authentication authentication = testManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
