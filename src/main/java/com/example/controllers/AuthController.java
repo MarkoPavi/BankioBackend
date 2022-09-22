@@ -1,7 +1,7 @@
 package com.example.controllers;
 
-import com.example.interfaces.RoleInterface;
-import com.example.interfaces.UserDataInterface;
+import com.example.interfaces.RoleRepository;
+import com.example.interfaces.UserRepository;
 import com.example.jwt.JwtUtilities;
 import com.example.models.AuthLevel;
 import com.example.models.Role;
@@ -11,16 +11,10 @@ import com.example.models.payloads.requests.RegisterRequest;
 import com.example.models.payloads.responses.MessageResponse;
 import com.example.models.payloads.responses.TokenResponse;
 import com.example.services.UserDetailsImpl;
-import org.apache.catalina.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Conditional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,9 +37,10 @@ public class AuthController {
     AuthenticationManager testManager;
 
     private final
-    UserDataInterface userDataInterface;
+    UserRepository userRepository;
 
-    private final RoleInterface roleInterface;
+    private final
+    RoleRepository roleRepository;
 
     private final
     PasswordEncoder encoder;
@@ -53,10 +48,10 @@ public class AuthController {
     private final
     JwtUtilities jwtUtilities;
 
-    public AuthController(AuthenticationManager testManager, UserDataInterface userDataInterface, RoleInterface roleInterface, PasswordEncoder encoder, JwtUtilities jwtUtilities) {
+    public AuthController(AuthenticationManager testManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder, JwtUtilities jwtUtilities) {
         this.testManager = testManager;
-        this.userDataInterface = userDataInterface;
-        this.roleInterface = roleInterface;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.encoder = encoder;
         this.jwtUtilities = jwtUtilities;
     }
@@ -87,13 +82,13 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
-        if (userDataInterface.existsByUsername(registerRequest.getUsername())) {
+        if (userRepository.existsByUsername(registerRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        if (userDataInterface.existsByEmail(registerRequest.getEmail())) {
+        if (userRepository.existsByEmail(registerRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
@@ -113,24 +108,24 @@ public class AuthController {
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
-            Role userRole = roleInterface.findByLevel(AuthLevel.LEVEL_USER)
+            Role userRole = roleRepository.findByLevel(AuthLevel.LEVEL_USER)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
             roles.add(userRole);
         } else {
             strRoles.forEach(role -> {
                 switch (role) {
                     case "admin" -> {
-                        Role adminRole = roleInterface.findByLevel(AuthLevel.LEVEL_ADMIN)
+                        Role adminRole = roleRepository.findByLevel(AuthLevel.LEVEL_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
                     }
                     case "distributor" -> {
-                        Role modRole = roleInterface.findByLevel(AuthLevel.LEVEL_DISTRIBUTER)
+                        Role modRole = roleRepository.findByLevel(AuthLevel.LEVEL_DISTRIBUTER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(modRole);
                     }
                     default -> {
-                        Role userRole = roleInterface.findByLevel(AuthLevel.LEVEL_USER)
+                        Role userRole = roleRepository.findByLevel(AuthLevel.LEVEL_USER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(userRole);
                     }
@@ -139,7 +134,7 @@ public class AuthController {
         }
 
         userData.setRoles(roles);
-        userDataInterface.save(userData);
+        userRepository.save(userData);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }

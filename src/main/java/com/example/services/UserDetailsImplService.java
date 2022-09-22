@@ -1,6 +1,6 @@
 package com.example.services;
 
-import com.example.interfaces.UserDataInterface;
+import com.example.interfaces.UserRepository;
 import com.example.models.UserData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,12 +14,12 @@ import javax.transaction.Transactional;
 public class UserDetailsImplService implements UserDetailsService {
 
     @Autowired
-    UserDataInterface userDataInterface;
+    UserRepository userRepository;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
-        UserData userData = userDataInterface.findUserDataByUsername(username)
+        UserData userData = userRepository.findUserDataByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: "+ username));
 
         return UserDetailsImpl.build(userData);

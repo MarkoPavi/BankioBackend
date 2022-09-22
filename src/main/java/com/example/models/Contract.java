@@ -15,7 +15,7 @@ import java.util.Objects;
 @ToString
 @Builder
 @AllArgsConstructor
-@Table(name = "someData")
+@Table(name = "contract")
 @NoArgsConstructor
 public class Contract {
 

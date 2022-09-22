@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BankInterface extends JpaRepository<Contract, Integer> {
+public interface BankRepository extends JpaRepository<Contract, Integer> {
 
     List<Contract> findByPublished(boolean publish);
 

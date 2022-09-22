@@ -1,7 +1,7 @@
 
 package com.example.services;
 
-import com.example.interfaces.BankInterface;
+import com.example.interfaces.BankRepository;
 import com.example.models.Contract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ public class BankService {
 
     final static Logger log = LoggerFactory.getLogger(BankService.class);
     @Autowired
-    BankInterface bankRepository;
+    BankRepository bankRepository;
 
     public ResponseEntity<List<Contract>> getAllContracts(){
         try {
