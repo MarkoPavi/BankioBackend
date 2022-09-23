@@ -26,7 +26,7 @@ public class SecurityConfiguration {
 
 
     @Autowired
-    UserDetailsImplService userService;
+    private UserDetailsImplService userService;
 
     @Autowired
     private AuthEntryPoint authErrorCatcher;
