@@ -59,9 +59,10 @@ public class SecurityConfiguration {
                  .and()
                  .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                  .and()
-                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-                 .antMatchers("/api/test/**").permitAll()
-                 .anyRequest().authenticated();
+                 .authorizeRequests()
+                 .antMatchers("/api/auth").permitAll()
+                 .and()
+                 .authorizeRequests().antMatchers("/api/contract").authenticated();
      security.authenticationProvider(authProvider());
      security.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
 

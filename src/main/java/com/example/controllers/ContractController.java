@@ -12,17 +12,15 @@ import java.util.List;
 
 /*@CrossOrigin(origins = "http://localhost:8081") //todo*/
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/contract")
 public class ContractController {
 
     @Autowired
     private BankService bankService;
 
-    @GetMapping("/getAllContracts")
-    public ResponseEntity<List<Contract>> getAllData(){
-        return bankService.getAllContracts();
-    }
 
+
+    //@PreAuthorize("")
     @GetMapping("/getContract/{id}")
     public ResponseEntity<Contract> getDataById(@PathVariable("id") int id){
         return bankService.getContract(id);
@@ -46,6 +44,13 @@ public class ContractController {
         return bankService.deleteContract(id);
     }
 
+    @GetMapping("/getAllContracts")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Contract>> getAllData(){
+        return bankService.getAllContracts();
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/deleteAllContracts")
     public ResponseEntity<HttpStatus> deleteAllContracts() {
         return bankService.deleteAllContracts();
