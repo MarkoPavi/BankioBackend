@@ -11,7 +11,7 @@
     <groupId>com.example</groupId>
     <artifactId>bankio-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>fbankio-backend</name>
+    <name>bankio-backend</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>16</java.version>
@@ -90,7 +90,7 @@
         </dependency>
     </dependencies>
     <scm>
-        <developerConnection>scm:git:https://github.com/MarkoPavi/BankioBackend.git</developerConnection>
+        <developerConnection>scm:https://github.com/MarkoPavi/BankioBackend</developerConnection>
     </scm>
     <build>
         <plugins>
