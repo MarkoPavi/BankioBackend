@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.example</groupId>
     <artifactId>bankio-backend</artifactId>
-    <version>0.0.5-SNAPSHOT</version>
+    <version>0.0.5</version>
     <name>bankio-backend</name>
     <description>Demo project for Spring Boot</description>
     <properties>
@@ -90,7 +90,7 @@
     </dependencies>
     <scm>
         <developerConnection>scm:git:https://MarkoPavi@github.com/BankioBackend.git</developerConnection>
-      <tag>bankio-backend-0.0.4</tag>
+      <tag>bankio-backend-0.0.5</tag>
   </scm>
     <build>
         <plugins>
