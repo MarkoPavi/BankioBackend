@@ -89,7 +89,7 @@
         </dependency>
     </dependencies>
     <scm>
-        <developerConnection>scm:git:https://github.com/MarkoPavi/BankioBackend</developerConnection>
+        <developerConnection>scm:git:https://github.com/MarkoPavi/BankioBackend.git</developerConnection>
       <tag>bankio-backend-0.0.1</tag>
   </scm>
     <build>
