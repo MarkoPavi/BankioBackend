@@ -90,7 +90,7 @@
         </dependency>
     </dependencies>
     <scm>
-        <developerConnection>scm:https://github.com/MarkoPavi/BankioBackend</developerConnection>
+        <developerConnection>scm:git:https://github.com/MarkoPavi/BankioBackend</developerConnection>
     </scm>
     <build>
         <plugins>
