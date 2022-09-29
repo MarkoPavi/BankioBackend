@@ -37,6 +37,7 @@ public class JwtUtilities {
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
+
     public String getUserNameFromToken(String token) {
         return Jwts.parser()
                 .setSigningKey(jwtSecret)
